@@ -45,7 +45,7 @@ exports.dbStartup = function(dburl) {
     });
 };
 
-app.set('dburl', process.env.HEROKU_POSTGRESQL_GREEN_URL || process.env.DATABASE_URL);
+app.set('dburl', process.env.DATABASE_URL);
 app.set('port', (process.env.PORT || 3000));
 app.use(express.static(__dirname + '/public'));
 
