@@ -1,0 +1,66 @@
+<p>This is Caxton.</p>
+
+<h1>get a bookmarklet</h1>
+<ol>
+<li>press the button in the caxton app</li>
+<li>enter the code here: <input maxlength=5 size=5 style="font-size: 2em"></li>
+<li>press this button to generate a bookmarklet: <button>press me</button>
+<li>get your bookmarklet here: <span></span></li>
+</ol>
+
+<script>
+document.querySelector("button").addEventListener("click", function() {
+    var code = document.querySelector("input").value;
+    /*if (!code.match(/^[a-z][a-z][a-z][a-z][a-z]$/)) {
+        alert("fail");
+        return;
+    }*/
+    var x = new XMLHttpRequest();
+    x.open("POST", "/api/gettoken", true);
+    x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    x.onload = function() {
+    var fail = false, token;
+        console.log(x.responseText);
+        console.log(x.status);
+        if (x.status == 200) {
+            try {
+                var j = JSON.parse(x.responseText);
+                if (!j.token) {
+                    fail = true;
+                } else {
+                    token = j.token;
+                }
+            } catch(e) {
+                fail = false;
+            }
+        } else {
+            fail = true;
+        }
+        /*if (fail) {
+            alert("server fail");
+            return;
+        }*/
+        var bmurl = "javascript:(function(){" +
+            "var d=document.createElement('div');" +
+            "d.innerHTML='sending to phone..." +
+            "<img width=1 height=1 src=\\'data:image/png;base64;foo\\' onerror=\\'" +
+            "var p=this.parentNode;this.remove();var x=new XMLHttpRequest();" +
+            "x.open(&quot;POST&quot;,&quot;http://localhost:3000/api/send&quot;);" +
+            "x.setRequestHeader(&quot;Content-type&quot;, &quot;application/x-www-form-urlencoded&quot;);"+
+            "x.onload=function(){" +
+            "if(x.status==200){p.innerHTML=&quot;ok!&quot;}else{p.innerHTML=&quot;fail&quot;}" +
+            "}; x.send(&quot;token=&quot;+encodeURIComponent(&quot;" + encodeURIComponent(token) + "&quot;)+&quot;&url=&quot;+encodeURIComponent(location.href));" +
+            "\\'>';" +
+            "var styles={position:'absolute',top:'15px',left:'15px',width:'200px'," +
+            "height:'150px',border:'2px solid black',background:'white',zIndex:9999};" +
+            "for (var s in styles){d.style[s]=styles[s];};document.body.appendChild(d);"
+            + "})()";
+        var a = document.createElement("a");
+        a.href = bmurl;
+        a.appendChild(document.createTextNode('send to Ubuntu phone'));
+        document.querySelector('span').appendChild(a);
+    }
+    x.send("code=" + code);
+
+}, false);
+</script>
