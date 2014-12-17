@@ -59,10 +59,13 @@ app.use(bodyParser.urlencoded({
 app.get('/', function (req, res) {
     res.render('home');
 });
+app.get('/bookmarklet', function (req, res) {
+    res.render('bookmarklet');
+});
 
 function sendPushNotification(token, content, done) {
     console.log("requesting with token", token);
-    request.post({
+    var dict = {
         url: "https://push.ubuntu.com/notify",
         json: true,
         body: {
@@ -73,37 +76,39 @@ function sendPushNotification(token, content, done) {
                 message: content,
                 notification: {
                     card: {
-                        summary: "yes",
-                        body: "hello",
+                        summary: content.appname,
+                        body: content.message,
                         popup: true,
                         persist: true
                     },
-                    sound: "buzz.mp3",
-                    tag: "foo",
+                    sound: content.sound,
+                    tag: content.tag,
                     vibrate: {
                         duration: 200,
                         pattern: (200, 100),
                         repeat: 2
-                    },
-                    "emblem-counter": {
-                        count: 12,
-                        visible: true
                     }
                 }
             }
         }
-    }, function(err, resp) {
+    };
+    if (content.count) {
+        dict.body.data.notification["emblem-counter"] = {count: content.count, visible: true};
+    }
+    request.post(dict, function(err, resp) {
         console.log("request done", resp.body);
         done(err);
     });
 }
 
-function unwrapPassedToken(enc) {
+function unwrapPassedToken(enc, appname) {
     // the token we receive should actually be encrypted JSON {token: actualtoken}
     var dec, pushtoken;
     dec = key.decrypt(enc, 'utf8');
     dec = JSON.parse(dec);
-    if (!dec.token) { throw new Error("No token entry in JSON: " + dec); }
+    if (!dec.token) { throw new Error("No token entry in JSON: " + JSON.stringify(dec)); }
+    if (dec.appname != appname) { throw new Error("Mismatched appname ('" + 
+        appname + "' vs '" + dec.appname + "') in JSON: " + JSON.stringify(dec)); }
     return dec.token;
 }
 
@@ -142,6 +147,9 @@ app.post('/api/gettoken', function(req, res) {
     if (!req.body || !req.body.code) {
         return res.status(400).json({error: "Incomplete request"});
     }
+    if (!req.body.appname) {
+        return res.status(400).json({error: "No appname provided"});
+    }
     pg.connect(app.get('dburl'), function(err, client, returnClientToPool) {
         if (err) {
             console.log("Error getting code: connection: ", err);
@@ -159,7 +167,10 @@ app.post('/api/gettoken', function(req, res) {
                 return res.status(404).json({error: "no such code"});
             }
             // encrypt token with public key before sending it to client
-            var enctoken = pubkey.encrypt(JSON.stringify({token:result.rows[0].pushtoken}), "base64");
+            var enctoken = pubkey.encrypt(JSON.stringify({
+                token:result.rows[0].pushtoken,
+                appname: req.body.appname
+            }), "base64");
             res.json({token: enctoken});
             // and remove token from DB
             client.query("delete from codes where code = $1::varchar", [req.body.code], function(err, result) {
@@ -170,18 +181,20 @@ app.post('/api/gettoken', function(req, res) {
 });
 
 app.post('/api/send', function(req, res) {
-    if (!req.body || !req.body.token || !req.body.url) {
+    if (!req.body || !req.body.token || !req.body.url || !req.body.appname) {
         console.log("Body missing parameters", req.body);
         return res.status(400).json({error: "Incomplete request"});
     }
     var token;
     try {
-        token = unwrapPassedToken(req.body.token);
+        token = unwrapPassedToken(req.body.token, req.body.appname);
     } catch(e) {
         console.log("Passed invalid token in send request", e);
         return res.status(400).json({error: "Invalid token"});
     }
-    sendPushNotification(token, {url:req.body.url}, function(err) {
+    sendPushNotification(token, {url:req.body.url, appname: req.body.appname, 
+        message: req.body.message || req.body.url, tag: req.body.tag || "caxton",
+        sound: req.body.sound || "buzz.mp3"}, function(err) {
         if (err) {
             console.log("Error sending push notification", e);
             return res.status(500).json({error: "Push notification failed"});

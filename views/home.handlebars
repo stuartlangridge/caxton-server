@@ -1,66 +1,180 @@
-<p>This is Caxton.</p>
+            <div id="intro-wrap">
+                <div id="intro" class="preload" data-autoplay="5000" data-navigation="true" data-pagination="true" data-transition="fade">  
+                    <div class="intro-item" style="background-color: #70767C;">     
+                        <div class="intro-mockup-wrapper">      
+                            <div class="caption-mockup caption-right column six last-special">
+                                <h2>Push for Ubuntu</h2>
+                                <p>Caxton handles push notifications for all your Ubuntu apps.</p>
+                                <a class="button white transparent" href="#">Read More</a>
+                            </div><!-- caption -->
+                            <div class="intro-mockup intro-left column six">
+                                <img src="http://placehold.it/780x1824/ddd/fff&text=placeholder%20image" alt="">
+                            </div><!-- intro-mockup -->                         
+                        </div><!-- intro-mockup-wrapper -->
+                    </div>                  
+                    <div class="intro-item" style="background-color: #70767C;">
+                        <div class="intro-mockup-wrapper">                      
+                            <div class="caption-mockup">
+                                <h2>Built for users</h2>
+                                <p>Send anything to your Ubuntu phone with IFTTT or from your browser.</p>
+                            </div><!-- caption -->  
+                            <div class="photocaption">
+                                <h4>Shot by <a href="http://dribbble.com/noptar">Mani</a></h4>
+                            </div><!-- photocaption -->                                                 
+                            <div class="intro-mockup">
+                                <img src="http://placehold.it/1193x937/ddd/fff&text=placeholder%20image" alt="">
+                            </div><!-- intro-mockup --> 
+                        </div><!-- intro-mockup-wrapper -->                                     
+                    </div>
+                    <div class="intro-item" style="background-color: #70767C;">
+                        <div class="intro-mockup-wrapper">
+                            <div class="caption-mockup caption-left column six">
+                                <h2>Easy for developers</h2>
+                                <p>Use the Caxton API to add push to your desktop apps or your server scripts.</p>
+                                <a class="button white transparent" href="#">Read More</a>
+                            </div><!-- caption -->                                              
+                            <div class="intro-mockup intro-right column six last">
+                                <img src="http://placehold.it/780x1824/ddd/fff&text=placeholder%20image" alt="">
+                            </div><!-- intro-mockup --> 
+                        </div><!-- intro-mockup-wrapper -->
+                    </div>  
+                </div><!-- intro -->
+            </div><!-- intro-wrap -->
 
-<h1>get a bookmarklet</h1>
-<ol>
-<li>press the button in the caxton app</li>
-<li>enter the code here: <input maxlength=5 size=5 style="font-size: 2em"></li>
-<li>press this button to generate a bookmarklet: <button>press me</button>
-<li>get your bookmarklet here: <span></span></li>
-</ol>
+            <div id="main">
+                <section class="row section call-to-action">
+                    <div class="row-content buffer even">
+                        <p>You need Caxton.</p>
+                        <a class="button red" href="#">Get it now!</a>
+                    </div>
+                </section>
 
-<script>
-document.querySelector("button").addEventListener("click", function() {
-    var code = document.querySelector("input").value;
-    /*if (!code.match(/^[a-z][a-z][a-z][a-z][a-z]$/)) {
-        alert("fail");
-        return;
-    }*/
-    var x = new XMLHttpRequest();
-    x.open("POST", "/api/gettoken", true);
-    x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    x.onload = function() {
-    var fail = false, token;
-        console.log(x.responseText);
-        console.log(x.status);
-        if (x.status == 200) {
-            try {
-                var j = JSON.parse(x.responseText);
-                if (!j.token) {
-                    fail = true;
-                } else {
-                    token = j.token;
-                }
-            } catch(e) {
-                fail = false;
-            }
-        } else {
-            fail = true;
-        }
-        /*if (fail) {
-            alert("server fail");
-            return;
-        }*/
-        var bmurl = "javascript:(function(){" +
-            "var d=document.createElement('div');" +
-            "d.innerHTML='sending to phone..." +
-            "<img width=1 height=1 src=\\'data:image/png;base64;foo\\' onerror=\\'" +
-            "var p=this.parentNode;this.remove();var x=new XMLHttpRequest();" +
-            "x.open(&quot;POST&quot;,&quot;http://localhost:3000/api/send&quot;);" +
-            "x.setRequestHeader(&quot;Content-type&quot;, &quot;application/x-www-form-urlencoded&quot;);"+
-            "x.onload=function(){" +
-            "if(x.status==200){p.innerHTML=&quot;ok!&quot;}else{p.innerHTML=&quot;fail&quot;}" +
-            "}; x.send(&quot;token=&quot;+encodeURIComponent(&quot;" + encodeURIComponent(token) + "&quot;)+&quot;&url=&quot;+encodeURIComponent(location.href));" +
-            "\\'>';" +
-            "var styles={position:'absolute',top:'15px',left:'15px',width:'200px'," +
-            "height:'150px',border:'2px solid black',background:'white',zIndex:9999};" +
-            "for (var s in styles){d.style[s]=styles[s];};document.body.appendChild(d);"
-            + "})()";
-        var a = document.createElement("a");
-        a.href = bmurl;
-        a.appendChild(document.createTextNode('send to Ubuntu phone'));
-        document.querySelector('span').appendChild(a);
-    }
-    x.send("code=" + code);
+                <section class="row section" id="for-users">
+                    <div class="row-content buffer even clear-after">   
+                        <div class="column six">
+                            <h2>For users</h2>
+                            <p>Install Caxton on your Ubuntu phone and then send messages to any Ubuntu 
+                            app through it. You can use Caxton to <a href="bookmarklet">send web pages 
+                            to your phone from any browser</a>, or <a href="ifttt">send notifications 
+                            from IFTTT to your phone</a>.</p>
+                        </div>
+                        <div class="side-mockup right-mockup animation">
+                            <div class="slider ubuntu-edge-slider grey" data-autoplay="false">
+                                <figure>
+                                    <div><img src="http://placehold.it/320x588/ddd/fff&text=Edge%20image" alt=""></div>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>  
+                </section>  
 
-}, false);
-</script>
+                <section class="row section" id="for-developers">
+                    <div class="row-content buffer even clear-after">   
+                        <div class="column six push-six last-special">
+                            <h2>For developers</h2>
+                            <p>Use the <a href="/api">Caxton API</a> to send any URL to your phone 
+                            apps. You could <a href="desktop">integrate push sends into your 
+                            desktop apps</a>, or <a href="scripts">send messages from your scripts to 
+                            your phone</a>.</p>
+                            <a class="button transparent aqua" href="#api">Explore the API</a>
+                        </div>                          
+                        <div class="side-mockup left-mockup animation">
+                            <div class="slider desktop-slider" data-autoplay="3000">
+                                <figure>
+                                    <div><img src="http://placehold.it/1148x630/ddd/fff&text=placeholder%20image" alt=""></div>
+                                    <div><img src="http://placehold.it/1148x630/ddd/fff&text=placeholder%20image" alt=""></div>
+                                </figure>
+                            </div>
+                        </div>                  
+                    </div>  
+                </section>                  
+
+                <section class="row section text-light" style="background-color:#4FCEAD;">
+                    <div class="row-content buffer even clear-after">
+                        <div class="slogan animation">
+                            <h2>Ermahgerd!</h2> 
+                            <p>Caxton is so good.</p>                        
+                        </div><!-- slogan -->               
+                    </div>
+                </section>  
+
+                <section class="row section" id="api">
+                    <div class="row-content buffer even clear-after">   
+                        <div class="column twelve last">
+                            <h2>Caxton API</h2>
+                        </div>
+                        <div class="column six">
+                            <h3>Get a token</h3>
+                            <p>Ask the user to press the button in the Caxton phone app and then enter
+                            the code it gives. <code>POST</code> that code and your app's name to 
+                            <code>/api/gettoken</code> to get a token. Save the token to use in future
+                            send requests. You only need to do this once.</p>
+                        </div>
+                        <div class="column six last">
+                            <h3>Code</h3>
+                            <pre>curl -X POST \
+ -d "code=abcde&amp;appname=My%20app%20name" \
+ http://caxton.herokuapp.com/api/gettoken
+
+Content-type: application/json
+{"token": "lcaw...aspof"}
+                            </pre>
+                        </div>
+                        <div class="column six">
+                            <h3>Send a notification</h3>
+                            <p><code>POST</code> to <code>/api/send</code> with required parameters <code>url</code>,
+                            <code>appname</code>, and <code>token</code> and any optional parameters from below.
+                            Your URL will be sent to Caxton and opened on the phone in whichever application
+                            handles it. For an HTTP URL, this will be the web browser, but you can send any URL
+                            you choose, including app-specific URLs to open a different app.</p>
+                        </div>
+                        <div class="column six last">
+                            <h3>Code</h3>
+                            <pre>curl -X POST \
+ -d "appname=My%20app%20name" \
+ -d "token=lcaw...aspof" \
+ -d "url=http://kryogenix.org" \
+ http://caxton.herokuapp.com/api/send
+
+Content-type: application/json
+{ok: "Ok"}
+                            </pre>
+                        </div>
+                        <div class="column six">
+                            <h3>Required notification parameters</h3>
+                            <dl>
+                                <dt>url</dt>
+                                <dd>A URL to open on the target device.</dd>
+                                <dt>appname</dt>
+                                <dd>The app name for which your token was registered.</dd>
+                                <dt>token</dt>
+                                <dd>The token returned from <code>/api/gettoken</code>.</dd>
+                            </dl>
+                        </div>
+                        <div class="column six last">
+                            <h3>Optional notification parameters</h3>
+                            <dl>
+                                <dt>message</dt>
+                                <dd>A message to be shown in an on-screen notification on the device, and
+                                saved with the URL for later access in the Caxton app.</dd>
+                                <dt>count</dt>
+                                <dd>A number to use in a badge on the Caxton icon.</dd>
+                                <dt>sound</dt>
+                                <dd>The name of a sound to play on the device when the notification arrives.
+                                Choose from the following: (not yet specified, apologies.)</dd>
+                                <dt>tag</dt>
+                                <dd>A grouping for notifications; if this is specified, a newer notification
+                                with the same tag will override the previous one. See the <a 
+                                href="http://developer.ubuntu.com/apps/platform/guides/push-notifications-server-guide/">push notifications server guide</a> for details.</dd>
+                            </dl>
+                        </div>
+                    </div>  
+                </section>  
+
+                <section class="row section call-to-action">
+                    <div class="row-content buffer even">
+                        <p>You need Caxton.</p>
+                        <a class="button red" href="#">Get it now!</a>
+                    </div>
+                </section>
+            </div><!-- id-main -->
