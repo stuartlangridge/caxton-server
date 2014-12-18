@@ -101,20 +101,43 @@
                 <section class="row section" id="bookmarklet">
                     <div class="row-content buffer even clear-after">
                         <div class="column twelve last">
-                            <h2>Send web pages to your phone from any browser</h2>
+                            <h2>Send web pages to your Ubuntu phone from any browser</h2>
                         </div>
                         <div class="column six">
                             <h3>Add the Caxton bookmarklet</h3>
                             <p>Press the <strong>Get a code</strong> button in Caxton on your Ubuntu
                             device and then enter the code in the box on the right.</p>
+                            <p>You'll then get a <em>bookmarklet</em>: a button which acts like a tiny
+                            browser extension. Drag it to your bookmarks bar and then click it when viewing
+                            any website to send that website to your phone!</p>
                         </div>
                         <div class="column six last">
                             <form id="bmform">
-                                <input type="text" id="bmcode" maxlength=5 required>
+                                <input type="text" id="bmcode" maxlength=5 required placeholder="enter code from Caxton app">
                                 <button id="getbm" class="button mint"><i class="fa fa-anchor"></i> <span>Get bookmarklet</span></button><span class="error"></span>
-                                <p><span></span><strong>Drag the link to your bookmarks bar</strong></p>
+                                <div>
+                                    <span></span>
+                                    <div>
+                                        <strong>Drag the button to your bookmarks bar.</strong>
+                                        <div>If you don't have a bookmarks bar:
+                                            <div>In <strong>Chrome</strong>
+                                            <a href="https://support.google.com/chrome/answer/95745?hl=en-GB">select 
+                                            <em>Bookmarks > Show bookmarks bar</em> from the browser menu</a>, or
+                                            press <em class="key">Ctrl</em> <em class="key">Shift</em> 
+                                            <em class="key">B</em> or <em class="key">⌘</em> 
+                                            <em class="key">Shift</em> <em class="key">B</em>.</div>
+                                            <div>In <strong>Firefox</strong>,
+                                            <a href="https://support.mozilla.org/en-US/kb/bookmarks-toolbar-display-favorite-websites">select <em>Customize > 
+                                            Show/Hide Toolbars > Bookmarks Toolbar</em> from the browser menu</a>.</div>
+                                            <div>In <strong>Safari</strong>,
+                                            <a href="http://marklets.com/FAQ.aspx#safari">select <em>View > 
+                                            Show Bookmarks Bar</em> from the main menu</a>.</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                             <style>
+                            #bmcode { text-align: center; }
                             #getbm.getting i {
                                 -webkit-animation: spin 1s linear infinite;
                                 animation: spin 1s linear infinite;
@@ -135,11 +158,28 @@
                             #getbm.getting span {
                                 opacity: 0;
                             }
-                            #bmform p span:empty + strong {
+                            #bmform {
+                                margin-top: 1.7em;
+                            }
+                            #bmform div span:empty + div {
                                 display: none;
                             }
-                            #bmform p span:not(:empty) + strong {
+                            #bmform div span:not(:empty) + div {
                                 display: block;
+                                margin-top: 5px;
+                            }
+                            #bmform > div > div > div {
+                                font-size: 0.6em;
+                            }
+                            #bmform > div > div > div > div {
+                                margin-left: 10px;
+                            }
+                            #bmform div span a {
+                                background: #ccc;
+                                padding: 10px;
+                                border: 2px outset #ddd;
+                                border-radius: 5px;
+                                text-decoration: none;
                             }
                             #bmform span.error:not(:empty) {
                                 border-radius: 4px;
