@@ -67,7 +67,8 @@ app.use(xrpc.xmlRpc);
 
 app.post('/xmlrpc.php', xrpc.route({
     mt: {
-        supportedMethods: function(callback) {
+        supportedMethods: function(arg1, callback) {
+            console.log("supported methods called", arg1);
             callback(null, ["metaWeblog.getRecentPosts"]);
         }
     },
@@ -77,6 +78,7 @@ app.post('/xmlrpc.php', xrpc.route({
             callback(null, "http://blog/posts/124");
         },
         getRecentPosts: function(blogid, username, password, numberOfPosts, callback) {
+            console.log("getRecentPosts called", blogid, username, password, numberOfPosts);
             callback(null, []);
         }
    }
