@@ -78,19 +78,22 @@ var xroute = xrpc.route({
         },
         getRecentPosts: function(blogid, username, password, numberOfPosts, callback) {
             console.log("getRecentPosts called", blogid, username, password, numberOfPosts);
-            res.send('<?xml version="1.0"?>\n<methodResponse>\n  <params>\n    <param>\n' +
-                '      <value>\n      <array><data></data></array>\n      </value>\n' +
-                '    </param>\n  </params>\n</methodResponse>');
-            //callback(null, []);
+            callback(null, ["ahahahahahaha"]);
         }
    }
 });
 
-app.post('/ifttt/xmlrpc.php', function(req, res, next) {
+app.post('/xmlrpc.php', function(req, res, next) {
     console.log("incoming xmlrpc request!", req.body_XMLRPC);
     res.___send = res.send;
     res.send = function(val) {
         console.log("outgoing xmlrpc response!", val);
+        if (val.indexOf("ahahahahahaha") != -1) {
+            console.log("Actually sending crafted response");
+            val ='<?xml version="1.0"?>\n<methodResponse>\n  <params>\n    <param>\n' +
+                '      <value>\n      <array><data></data></array>\n      </value>\n' +
+                '    </param>\n  </params>\n</methodResponse>';
+        }
         this.___send(val);
     };
     return xroute(req, res, next);
