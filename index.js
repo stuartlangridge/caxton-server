@@ -78,7 +78,10 @@ var xroute = xrpc.route({
         },
         getRecentPosts: function(blogid, username, password, numberOfPosts, callback) {
             console.log("getRecentPosts called", blogid, username, password, numberOfPosts);
-            callback(null, []);
+            res.send('<?xml version="1.0"?>\n<methodResponse>\n  <params>\n    <param>\n' +
+                '      <value>\n      <array><data></data></array>\n      </value>\n' +
+                '    </param>\n  </params>\n</methodResponse>');
+            //callback(null, []);
         }
    }
 });
@@ -95,9 +98,6 @@ app.post('/ifttt/xmlrpc.php', function(req, res, next) {
 
 app.get('/', function (req, res) {
     res.render('home');
-});
-app.get('/bookmarklet', function (req, res) {
-    res.render('bookmarklet');
 });
 
 function sendPushNotification(token, content, done) {
