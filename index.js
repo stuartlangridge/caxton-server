@@ -84,7 +84,7 @@ var xroute = xrpc.route({
 });
 
 app.post('/xmlrpc.php', function(req, res, next) {
-    console.log("incoming xmlrpc request!");
+    console.log("incoming xmlrpc request!", req.body_XMLRPC);
     return xroute(req, res, next);
 });
 
