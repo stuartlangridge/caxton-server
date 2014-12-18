@@ -184,7 +184,7 @@ app.post('/api/gettoken', function(req, res) {
             });
             // and notify the client that it's done
             sendPushNotification(result.rows[0].pushtoken, {type: "token-received", 
-                code: req.body.code, appname: req.body.appname, 
+                code: req.body.code, appname: "Caxton", paired_appname: req.body.appname,
                 message: "App " + req.body.appname + " is now paired!"}, function() {});
         });
     });
