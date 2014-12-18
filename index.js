@@ -78,13 +78,18 @@ var xroute = xrpc.route({
         },
         getRecentPosts: function(blogid, username, password, numberOfPosts, callback) {
             console.log("getRecentPosts called", blogid, username, password, numberOfPosts);
-            callback(null, [[]]);
+            callback(null, []);
         }
    }
 });
 
 app.post('/xmlrpc.php', function(req, res, next) {
     console.log("incoming xmlrpc request!", req.body_XMLRPC);
+    res.___send = res.send;
+    res.send = function(val) {
+        console.log("outgoing xmlrpc response!", val);
+        this.___send(val);
+    };
     return xroute(req, res, next);
 });
 
