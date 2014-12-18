@@ -56,6 +56,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.get('/', function (req, res) {
     res.render('home');
 });
@@ -176,6 +182,10 @@ app.post('/api/gettoken', function(req, res) {
             client.query("delete from codes where code = $1::varchar", [req.body.code], function(err, result) {
                 returnClientToPool();
             });
+            // and notify the client that it's done
+            sendPushNotification(result.rows[0].pushtoken, {type: "token-received", 
+                code: req.body.code, appname: req.body.appname, 
+                message: "App " + req.body.appname + " is now paired!"}, function() {});
         });
     });
 });
@@ -194,7 +204,7 @@ app.post('/api/send', function(req, res) {
     }
     sendPushNotification(token, {url:req.body.url, appname: req.body.appname, 
         message: req.body.message || req.body.url, tag: req.body.tag || "caxton",
-        sound: req.body.sound || "buzz.mp3"}, function(err) {
+        sound: req.body.sound || "buzz.mp3", type: "user"}, function(err) {
         if (err) {
             console.log("Error sending push notification", e);
             return res.status(500).json({error: "Push notification failed"});
