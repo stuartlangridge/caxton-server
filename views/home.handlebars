@@ -111,22 +111,100 @@
                         <div class="column six last">
                             <form id="bmform">
                                 <input type="text" id="bmcode" maxlength=5 required>
-                                <button class="button mint"><i class="fa fa-anchor"></i> Get bookmarklet</button>
+                                <button id="getbm" class="button mint"><i class="fa fa-anchor"></i> <span>Get bookmarklet</span></button><span class="error"></span>
+                                <p><span></span><strong>Drag the link to your bookmarks bar</strong></p>
                             </form>
+                            <style>
+                            #getbm.getting i {
+                                -webkit-animation: spin 1s linear infinite;
+                                animation: spin 1s linear infinite;
+                            }
+                            @keyframes spin {
+                                from { transform: rotate(0deg); }
+                                to { transform: rotate(360deg); }
+                            }
+                            @-webkit-keyframes spin {
+                                from { -webkit-transform: rotate(0deg); }
+                                to { -webkit-transform: rotate(360deg); }
+                            }
+                            #getbm span {
+                                opacity: 1;
+                                -webkit-transition: opacity 500ms ease;
+                                transition: opacity 500ms ease;
+                            }
+                            #getbm.getting span {
+                                opacity: 0;
+                            }
+                            #bmform p span:empty + strong {
+                                display: none;
+                            }
+                            #bmform p span:not(:empty) + strong {
+                                display: block;
+                            }
+                            #bmform span.error:not(:empty) {
+                                border-radius: 4px;
+                                padding: 8px 10px;
+                                opacity: 1;
+                                color: red;
+                                -webkit-animation: pulsered 150ms ease alternate;
+                                animation: pulsered 150ms ease alternate;
+                                -webkit-animation-iteration-count: 5;
+                                animation-iteration-count: 5;
+                            }
+                            @keyframes pulsered {
+                                0% { background: red; color: white; }
+                                50% { color: red; }
+                            }
+                            @-webkit-keyframes pulsered {
+                                0% { background: red; color: white; }
+                                50% { color: red; }
+                            }
+                            </style>
                             <script>
                             document.getElementById("bmform").addEventListener("submit", function(e) {
                                 e.preventDefault();
+                                document.querySelector("#bmform span.error").innerHTML = "";
+                                /* trigger reflow to restart animation. Stupid bug. 
+                                   As per http://css-tricks.com/restart-css-animation/ */
+                                document.querySelector("#bmform span.error").offsetWidth = document.querySelector("#bmform span.error").offsetWidth;
                                 function usebm() {
                                     var x = new XMLHttpRequest();
-                                    x.open("POST", "http://caxton.herokuapp.com/api/send", false);
+                                    x.open("POST", "http://caxton.herokuapp.com/api/send", true);
+                                    x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                     x.onreadystatechange = function() {
                                         if (x.readyState == 4) {
                                             console.log(JSON.parse(x.responseText));
                                         }
                                     };
-                                    x.send("appname=FIXME&token=!TOKEN!&url=" + location.href);
+                                    x.send("appname=Caxton%20bookmarklet&token=" + encodeURIComponent('!TOKEN!') + "&url=" + encodeURIComponent(location.href));
                                 }
-                                console.log(usebm.toString().replace(/\n/g,"").replace(/  +/g, " "));
+                                var x = new XMLHttpRequest();
+                                x.open("POST", "http://caxton.herokuapp.com/api/gettoken", true);
+                                x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                x.onreadystatechange = function() {
+                                    if (x.readyState == 4) {
+                                        var j;
+                                        try {
+                                            j = JSON.parse(x.responseText);
+                                        } catch(e) {
+                                            j = null;
+                                        }
+                                        document.getElementById("getbm").className = document.getElementById("getbm").className.replace(" getting", "");
+                                        if (!j || j.error) {
+                                            document.querySelector("#bmform span.error").innerHTML = "Failed. Please try again.";
+                                        } else {
+                                            var bm = usebm.toString().replace(/\n/g,"").replace(/  +/g, " ");
+                                            bm = bm.replace("!TOKEN!", encodeURIComponent(j.token));
+                                            var a = document.createElement("a");
+                                            a.href = "javascript:(" + bm + ")()";
+                                            a.appendChild(document.createTextNode("Send to my Ubuntu phone"));
+                                            document.querySelector("#bmform p span").innerHTML = "";
+                                            document.querySelector("#bmform p span").appendChild(a);
+                                        }
+                                    }
+                                };
+                                x.send("appname=Caxton%20bookmarklet&code=" + document.getElementById("bmcode").value);
+                                document.getElementById("getbm").className += " getting";
                             }, false);
                             </script>
                         </div>

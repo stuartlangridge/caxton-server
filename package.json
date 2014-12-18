@@ -4,7 +4,8 @@
   "description": "The server for Caxton",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start-nodemon": "nodemon index.js -w views"
   },
   "author": "Stuart Langridge <sil@kryogenix.org>",
   "license": "Public Domain",
