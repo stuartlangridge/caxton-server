@@ -62,6 +62,27 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.configure(function () {
+    app.use(xrpc.xmlRpc);
+});
+
+app.post('/xmlrpc.php', xrpc.route({
+    mt: {
+        supportedMethods: function(callback) {
+            callback(null, ["metaWeblog.getRecentPosts"]);
+        }
+    },
+    metaWeblog: {
+        newPost: function(blogid, username, password, post, publish, callback) {
+            console.log("got newPost", blogid, username, password, post, publish);
+            callback(null, "http://blog/posts/124");
+        },
+        getRecentPosts: function(blogid, username, password, numberOfPosts, callback) {
+            callback(null, []);
+        }
+   }
+}));
+
 app.get('/', function (req, res) {
     res.render('home');
 });
