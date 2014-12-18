@@ -64,8 +64,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(xrpc.xmlRpc);
-
-app.post('/xmlrpc.php', xrpc.route({
+var xroute = xrpc.route({
     mt: {
         supportedMethods: function(arg1, callback) {
             console.log("supported methods called", arg1);
@@ -82,7 +81,12 @@ app.post('/xmlrpc.php', xrpc.route({
             callback(null, []);
         }
    }
-}));
+});
+
+app.post('x/xmlrpc.php', function(req, res, next) {
+    console.log("incoming xmlrpc request!");
+    return xroute(req, res, next);
+});
 
 app.get('/', function (req, res) {
     res.render('home');
