@@ -6,7 +6,8 @@ var express = require('express'),
     async = require('async'),
     fs = require('fs'),
     RSA = require('node-rsa'),
-    request = require('request');
+    request = require('request'),
+    xrpc = require('xrpc');
 
 // load keys
 var key = new RSA();
@@ -62,9 +63,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.configure(function () {
-    app.use(xrpc.xmlRpc);
-});
+app.use(xrpc.xmlRpc);
 
 app.post('/xmlrpc.php', xrpc.route({
     mt: {
