@@ -78,7 +78,7 @@ var xroute = xrpc.route({
         },
         getRecentPosts: function(blogid, username, password, numberOfPosts, callback) {
             console.log("getRecentPosts called", blogid, username, password, numberOfPosts);
-            callback(null, [{}]);
+            callback(null, []);
         }
    }
 });
