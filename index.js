@@ -84,13 +84,7 @@ var xroute = xrpc.route({
 });
 
 app.post('/xmlrpc.php', function(req, res, next) {
-    console.log("incoming xmlrpc request!", req.body_XMLRPC);
-    res.___send = res.send;
-    res.contentType('text/xml');
-    res.send = function(val) {
-        console.log("outgoing xmlrpc response!", val);
-        this.___send(val);
-    };
+    res.contentType('text/xml'); // without this, ifttt doesn't like us
     return xroute(req, res, next);
 });
 

@@ -112,9 +112,9 @@
                             any website to send that website to your phone!</p>
                         </div>
                         <div class="column six last">
-                            <form id="bmform">
+                            <form id="bmform" class="getform">
                                 <input type="text" id="bmcode" maxlength=5 required placeholder="enter code from Caxton app">
-                                <button id="getbm" class="button mint"><i class="fa fa-anchor"></i> <span>Get bookmarklet</span></button><span class="error"></span>
+                                <button id="getbm" class="button mint getcode"><i class="fa fa-anchor"></i> <span>Get bookmarklet</span></button><span class="error"></span>
                                 <div>
                                     <span></span>
                                     <div>
@@ -137,8 +137,8 @@
                                 </div>
                             </form>
                             <style>
-                            #bmcode { text-align: center; }
-                            #getbm.getting i {
+                            form.getform input { text-align: center; }
+                            button.getcode.getting i {
                                 -webkit-animation: spin 1s linear infinite;
                                 animation: spin 1s linear infinite;
                             }
@@ -150,15 +150,15 @@
                                 from { -webkit-transform: rotate(0deg); }
                                 to { -webkit-transform: rotate(360deg); }
                             }
-                            #getbm span {
+                            button.getcode span {
                                 opacity: 1;
                                 -webkit-transition: opacity 500ms ease;
                                 transition: opacity 500ms ease;
                             }
-                            #getbm.getting span {
+                            button.getcode.getting span {
                                 opacity: 0;
                             }
-                            #bmform {
+                            form.getform {
                                 margin-top: 1.7em;
                             }
                             #bmform div span:empty + div {
@@ -182,7 +182,7 @@
                                 border-radius: 5px;
                                 text-decoration: none;
                             }
-                            #bmform span.error:not(:empty) {
+                            form.getform span.error:not(:empty) {
                                 border-radius: 4px;
                                 padding: 8px 10px;
                                 opacity: 1;
@@ -202,51 +202,65 @@
                             }
                             </style>
                             <script>
-                            document.getElementById("bmform").addEventListener("submit", function(e) {
-                                e.preventDefault();
-                                document.querySelector("#bmform span.error").innerHTML = "";
-                                /* trigger reflow to restart animation. Stupid bug. 
-                                   As per http://css-tricks.com/restart-css-animation/ */
-                                document.querySelector("#bmform span.error").offsetWidth = document.querySelector("#bmform span.error").offsetWidth;
-                                function usebm() {
+
+                            function makeFormHandler(options) {
+                                return function(e) {
+                                    e.preventDefault();
+                                    var form = e.target;
+                                    form.querySelector("span.error").innerHTML = "";
+                                    /* trigger reflow to restart animation. Stupid bug. 
+                                       As per http://css-tricks.com/restart-css-animation/ */
+                                    form.querySelector("span.error").offsetWidth;
                                     var x = new XMLHttpRequest();
-                                    x.open("POST", "http://caxton.herokuapp.com/api/send", true);
+                                    x.open("POST", "http://caxton.herokuapp.com/api/gettoken", true);
                                     x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                     x.onreadystatechange = function() {
                                         if (x.readyState == 4) {
-                                            console.log(JSON.parse(x.responseText));
+                                            var j;
+                                            try {
+                                                j = JSON.parse(x.responseText);
+                                            } catch(e) {
+                                                j = null;
+                                            }
+                                            form.querySelector(".getcode").className = form.querySelector(".getcode").className.replace(" getting", "");
+                                            if (!j || j.error) {
+                                                form.querySelector("span.error").innerHTML = "Failed. Please try again.";
+                                            } else {
+                                                options.success(j.token);
+                                            }
                                         }
                                     };
-                                    x.send("appname=Caxton%20bookmarklet&token=" + encodeURIComponent('!TOKEN!') + "&url=" + encodeURIComponent(location.href));
-                                }
+                                    x.send("appname=" + encodeURIComponent(options.appname) + 
+                                        "&code=" + form.querySelector("input").value);
+                                    form.querySelector(".getcode").className += " getting";
+                                };
+                            }
+
+                            function usebm() {
                                 var x = new XMLHttpRequest();
-                                x.open("POST", "http://caxton.herokuapp.com/api/gettoken", true);
+                                x.open("POST", "http://caxton.herokuapp.com/api/send", true);
                                 x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                 x.onreadystatechange = function() {
                                     if (x.readyState == 4) {
-                                        var j;
-                                        try {
-                                            j = JSON.parse(x.responseText);
-                                        } catch(e) {
-                                            j = null;
-                                        }
-                                        document.getElementById("getbm").className = document.getElementById("getbm").className.replace(" getting", "");
-                                        if (!j || j.error) {
-                                            document.querySelector("#bmform span.error").innerHTML = "Failed. Please try again.";
-                                        } else {
-                                            var bm = usebm.toString().replace(/\n/g,"").replace(/  +/g, " ");
-                                            bm = bm.replace("!TOKEN!", encodeURIComponent(j.token));
-                                            var a = document.createElement("a");
-                                            a.href = "javascript:(" + bm + ")()";
-                                            a.appendChild(document.createTextNode("Send to my Ubuntu phone"));
-                                            document.querySelector("#bmform div span").innerHTML = "";
-                                            document.querySelector("#bmform div span").appendChild(a);
-                                        }
+                                        console.log(JSON.parse(x.responseText));
                                     }
                                 };
-                                x.send("appname=Caxton%20bookmarklet&code=" + document.getElementById("bmcode").value);
-                                document.getElementById("getbm").className += " getting";
-                            }, false);
+                                x.send("appname=Caxton%20bookmarklet&token=" + encodeURIComponent('!TOKEN!') + 
+                                    "&url=" + encodeURIComponent(location.href));
+                            }
+
+                            document.getElementById("bmform").addEventListener("submit", makeFormHandler({
+                                appname: "Caxton bookmarklet",
+                                success: function(token) {
+                                    var bm = usebm.toString().replace(/\n/g,"").replace(/  +/g, " ");
+                                    bm = bm.replace("!TOKEN!", encodeURIComponent(token));
+                                    var a = document.createElement("a");
+                                    a.href = "javascript:(" + bm + ")()";
+                                    a.appendChild(document.createTextNode("Send to my Ubuntu phone"));
+                                    document.querySelector("#bmform div span").innerHTML = "";
+                                    document.querySelector("#bmform div span").appendChild(a);
+                                }
+                            }), false);
                             </script>
                         </div>
                     </div>
@@ -260,6 +274,108 @@
                         </div><!-- slogan -->
                     </div>
                 </section>
+
+                <section class="row section" id="ifttt">
+                    <div class="row-content buffer even clear-after">
+                        <div class="column twelve last">
+                            <h2>Send IFTTT notifications to your Ubuntu phone</h2>
+                            <p><a href="https://ifttt.com">IFTTT</a> is a really popular way to connect together
+                            internet services; you can have it send a message and a URL to your Ubuntu phone when
+                            something happens, where <em>something</em> is you being tagged in a photo on Facebook,
+                            a parcel you're expecting being shipped, a github repository you care about being changed,
+                            a stock you're watching reaching a limit, and <a href="https://ifttt.com/channels">nearly
+                            200 other things</a>. IFTTT doesn't directly support Caxton yet, but you can make it work
+                            anyway with a bit of a hack!</p>
+                        </div>
+                        <div class="column six">
+                            <h3>First, get a Caxton password for IFTTT</h3>
+                            <p>Press the <strong>Get a code</strong> button in Caxton on your Ubuntu
+                            device and then enter the code in the box on the right.</p>
+                        </div>
+                        <div class="column six last">
+                            <form id="iftttform" class="getform">
+                                <input type="text" id="iftttcode" maxlength=5 required placeholder="enter code from Caxton app">
+                                <button id="getifttt" class="button mint getcode"><i class="fa fa-anchor"></i> <span>Get password for ifttt</span></button><span class="error"></span>
+                            </form>
+                            <style>
+                            .ifttt-step2 { display: none; }
+                            .ifttt-step2 #ifttt-token {
+                                border: 3px solid green;
+                                padding: 22px 12px 12px 12px;
+                                position: relative;
+                                background: #efe;
+                            }
+                            .ifttt-step2 #ifttt-token strong {
+                                position: absolute;
+                                top: -22px;
+                                left: 10px;
+                                border: 3px solid green;
+                                background: green;
+                                color: white;
+                                padding: 4px;
+                            }
+                            .ifttt-step2 #ifttt-token span {
+                                font-family: monospace;
+                            }
+                            .ifttt-step2.last {
+                                padding-top: 40px;
+                            }
+                            .twelve.divider {
+                                border-bottom: 1px solid #eee;
+                            }
+                            </style>
+                            <script>
+                            document.getElementById("iftttform").addEventListener("submit", makeFormHandler({
+                                appname: "ifttt",
+                                success: function(token) {
+                                    console.log("got ifttt token", token);
+                                    document.querySelector("#ifttt-token span").appendChild(
+                                        document.createTextNode(token));
+                                    Array.prototype.slice.call(document.querySelectorAll(".ifttt-step2,.ifttt-step3")).forEach(function(d) {
+                                        d.style.display = "block";
+                                    });
+                                }
+                            }), false);
+                            </script>
+                        </div>
+                        <div class="column twelve divider"></div>
+                        <div class="column six ifttt-step2">
+                            <h3>Next, activate the IFTTT WordPress channel</h3>
+                            <p>Sign in to IFTTT (or sign up), and then choose WordPress from the Channels
+                            page and Activate, or <a href="https://ifttt.com/channels/wordpress/activate">go 
+                            directly to it here</a>.</p>
+                            <ol>
+                            <li>In <strong>Blog URL</strong> enter <strong>caxton.herokuapp.com</strong></li>
+                            <li>In <strong>Username</strong> enter <strong>ifttt</strong></li>
+                            <li>Copy your token from below and paste it into the <strong>Password</strong> box</li>
+                            <li>Hit <strong>Activate</strong></li>
+                            </ol>
+                            <p id="ifttt-token"><strong>Your token</strong> <span></span></p>
+                            <p><em>Note: it's important that you enter everything correctly. The username must be
+                            ifttt in lower case, and the token must be pasted correctly.</em></p>
+                        </div>
+                        <div class="column six last ifttt-step2">
+                            <img src="ifttt-wordpress.png">
+                        </div>
+                        <div class="column twelve divider"></div>
+                        <div class="column six ifttt-step2">
+                            <h3>Finally, send URLs to your phone with IFTTT recipes</h3>
+                            <p>Blah blah blah.</p>
+                        </div>
+                        <div class="column six last ifttt-step2">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="row section text-light" style="background-color:#4FCEAD;">
+                    <div class="row-content buffer even clear-after">
+                        <div class="slogan animation">
+                            <h2>Ermahgerd!</h2>
+                            <p>Caxton is so good.</p>
+                        </div><!-- slogan -->
+                    </div>
+                </section>
+
 
                 <section class="row section" id="api">
                     <div class="row-content buffer even clear-after">
