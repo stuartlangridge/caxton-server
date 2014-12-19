@@ -210,12 +210,14 @@ describe('API',function() {
             sendtoken,
             called = false;
         server.__set__("sendPushNotification", function(token, content, cb) {
-            content.should.have.property("url");
-            content.url.should.equal(passedurl);
-            content.should.have.property("appname");
-            content.appname.should.equal(appname);
-            token.should.equal(pushtoken);
-            called = true;
+            if (content.type && content.type == "user") {
+                content.should.have.property("url");
+                content.url.should.equal(passedurl);
+                content.should.have.property("appname");
+                content.appname.should.equal(appname);
+                token.should.equal(pushtoken);
+                called = true;
+            }
             cb();
         });
         request(server.app).post("/api/getcode")

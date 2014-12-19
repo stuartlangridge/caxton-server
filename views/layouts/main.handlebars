@@ -5,7 +5,23 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta name="description" content="The Page Description">
-        <style type="text/css">@-ms-viewport{width: device-width;}</style>
+        <style type="text/css">
+        @-ms-viewport{width: device-width;}
+        .button.dlcaxton, body footer {
+            background-color: #1b3540;
+        }
+        .button.dlcaxton:hover {
+            background-color: #1b3540;
+            opacity: 0.8;
+        }
+        .button.dlcaxton i {
+            display: inline-block;
+            width: 20px !important;
+            height: 20px !important;
+            background: url(caxton-logo.svg) center center;
+            background-size: contain;
+        }
+        </style>
         <title>Caxton</title>
         <link rel="stylesheet" href="css/layers.min.css" media="screen">
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen"> 
@@ -61,8 +77,9 @@
                         </div>
                         <div class="widget column six">
                             <h4>Privacy</h4>
-                            <p>Caxton does not store URLs that you visit, and it has no idea who you are. There may
-                            be some references to visited URLs in server logs for testing purposes.</p>
+                            <p>Caxton itself does not store URLs that you visit, and it has no idea who you 
+                            are. There may be some references to visited URLs in server logs for testing 
+                            purposes and in anonymous collected data for analytics.</p>
                         </div>
                         <div class="widget meta-social column three">
                             <h4>Follow sil on twitter</h4>
@@ -76,7 +93,7 @@
                     <section id="bottom-footer">
                         <p class="keep-left">Site design uses Beetle HTML &copy; 2014 <a href="http://mokaine.com/" alt="Mokaine Lab">Mokaine</a>.</p>
                         <p class="keep-right">This is an <a href="http://www.kryogenix.org/">sil</a> thing.</p>
-                    </section><!-- bottom-footer -->            
+                    </section><!-- bottom-footer -->
                 </div><!-- row-content -->  
             </div><!-- row -->  
         </footer>
@@ -85,7 +102,16 @@
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
         <script src="js/plugins.js"></script>
         <script src="js/beetle.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-331575-5', 'auto');
+  ga('send', 'pageview');
+
+</script>
     </body>
 
 </html>

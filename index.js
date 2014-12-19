@@ -7,7 +7,10 @@ var express = require('express'),
     fs = require('fs'),
     RSA = require('node-rsa'),
     request = require('request'),
-    xrpc = require('xrpc');
+    xrpc = require('xrpc'),
+    ua = require('universal-analytics');
+
+var visitor = ua('UA-331575-5');
 
 // load keys
 var key = new RSA();
@@ -188,6 +191,7 @@ app.post('/api/getcode', function(req, res) {
             }
             console.log("Returning a code to client", code);
             res.json({code: code});
+            visitor.event("Code requested by phone app version", req.body.appversion || "unspecified").send();
         });
     });
 });
@@ -229,6 +233,7 @@ app.post('/api/gettoken', function(req, res) {
             sendPushNotification(result.rows[0].pushtoken, {type: "token-received", 
                 code: req.body.code, appname: "Caxton", paired_appname: req.body.appname,
                 message: "App " + req.body.appname + " is now paired!"}, function() {});
+            visitor.event("Token created for appname", req.body.appname).send();
         });
     });
 });
@@ -250,6 +255,7 @@ app.post('/api/send', function(req, res) {
         sound: req.body.sound || "buzz.mp3", type: "user"}, function(err) {
         if (err) {
             console.log("Error sending push notification", e);
+            visitor.event("Push", req.body.appname).send();
             return res.status(500).json({error: "Push notification failed"});
         }
         res.json({ok: "Ok"});
