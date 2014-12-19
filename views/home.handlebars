@@ -300,19 +300,23 @@
                             <style>
                             .ifttt-step2 { display: none; }
                             .ifttt-step2 #ifttt-token {
-                                border: 3px solid green;
+                                border: 3px solid rgba(79,206,173,1);
                                 padding: 22px 12px 12px 12px;
                                 position: relative;
-                                background: #efe;
+                                background: #ddf5ef;
                             }
                             .ifttt-step2 #ifttt-token strong {
                                 position: absolute;
-                                top: -22px;
+                                top: -18px;
                                 left: 10px;
-                                border: 3px solid green;
-                                background: green;
+                                border: 3px solid rgba(79,206,173,1);
+                                background: rgba(79,206,173,1);
                                 color: white;
-                                padding: 4px;
+                                padding: 1px 6px;
+                                text-transform: uppercase;
+                                font-size: 0.778em !important;
+                                font-family: 'Montserrat', sans-serif !important;
+                                font-weight: normal;
                             }
                             .ifttt-step2 #ifttt-token span {
                                 font-family: monospace;
@@ -322,6 +326,9 @@
                             }
                             .twelve.divider {
                                 border-bottom: 1px solid #eee;
+                            }
+                            .ifttt-step2.last img {
+                                box-shadow: 2px 2px 8px #333;
                             }
                             </style>
                             <script>
@@ -347,12 +354,14 @@
                             <ol>
                             <li>In <strong>Blog URL</strong> enter <strong>caxton.herokuapp.com</strong></li>
                             <li>In <strong>Username</strong> enter <strong>ifttt</strong></li>
-                            <li>Copy your token from below and paste it into the <strong>Password</strong> box</li>
+                            <li>Copy your IFTTT Caxton password from below and paste it into the 
+                            <strong>Password</strong> box</li>
                             <li>Hit <strong>Activate</strong></li>
                             </ol>
-                            <p id="ifttt-token"><strong>Your token</strong> <span></span></p>
+                            <p id="ifttt-token"><strong>Your IFTTT Caxton password</strong> <span></span></p>
                             <p><em>Note: it's important that you enter everything correctly. The username must be
-                            ifttt in lower case, and the token must be pasted correctly.</em></p>
+                            <strong>ifttt</strong> in lower case, and the IFTTT Caxton password must be 
+                            pasted correctly.</em></p>
                         </div>
                         <div class="column six last ifttt-step2">
                             <img src="ifttt-wordpress.png">
@@ -360,9 +369,25 @@
                         <div class="column twelve divider"></div>
                         <div class="column six ifttt-step2">
                             <h3>Finally, send URLs to your phone with IFTTT recipes</h3>
-                            <p>Blah blah blah.</p>
+                            <p>Create a <em>recipe</em> on IFTTT, and use <strong>WordPress</strong> as
+                            your <em>Action</em> when something is triggered. Choose <strong>Create a post</strong>
+                            in the WordPress Action, and then in <strong>Complete Action Fields</strong>
+                            fill in as follows:</p>
+                            <ul>
+                                <li>In <strong>Title</strong>, add the URL you wish to send to any app via Caxton.
+                                You can use any IFTTT "variables" here that you choose.</li>
+                                <li>In <strong>Body</strong>, add the message that you wish to accompany the URL.
+                                You can use IFTTT variables here too, and you can leave it blank to just send the
+                                URL if you prefer.</li>
+                                <li>Leave Categories and Tags blank and Post Status at Publish Immediately 
+                                (anything you enter will be ignored)</li>
+                            </ul>
+                            <p>You can then <strong>Create Action</strong> and your IFTTT recipe will now run
+                            as often as you specify, and send messages and URLs through Caxton on your Ubuntu
+                            phone whenever something happens!</p>
                         </div>
                         <div class="column six last ifttt-step2">
+                            <img src="ifttt-wordpress-2.png">
                         </div>
                     </div>
                 </section>

@@ -74,7 +74,26 @@ var xroute = xrpc.route({
     metaWeblog: {
         newPost: function(blogid, username, password, post, publish, callback) {
             console.log("got newPost", blogid, username, password, post, publish);
-            callback(null, "http://blog/posts/124");
+            var appname = username, xmlrpc_token = password, url, message;
+            if (post && post.title) url = post.title;
+            if (post && post.description) message = post.description;
+            if (!url) {
+                return callback(new Error("Invalid token"));
+            }
+            try {
+                token = unwrapPassedToken(xmlrpc_token, appname);
+            } catch(e) {
+                console.log("Passed invalid token in send request by xmlrpc", e);
+                return callback(new Error("Invalid token"));
+            }
+            sendPushNotification(token, {url: url, appname: appname, 
+                message: message || url, type: "user"}, function(err) {
+                if (err) {
+                    console.log("Error sending push notification from xmlrpc", e);
+                    return callback(new Error("Push notification failed"));
+                }
+                callback(null, "http://post/done/ok");
+            });
         },
         getRecentPosts: function(blogid, username, password, numberOfPosts, callback) {
             console.log("getRecentPosts called", blogid, username, password, numberOfPosts);
