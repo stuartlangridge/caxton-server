@@ -92,6 +92,7 @@ var xroute = xrpc.route({
                     console.log("Error sending push notification from xmlrpc", e);
                     return callback(new Error("Push notification failed"));
                 }
+                console.log("Message successfully sent from xmlrpc");
                 callback(null, "http://post/done/ok");
             });
         },
