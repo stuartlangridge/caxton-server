@@ -108,6 +108,10 @@ var xroute = xrpc.route({
 
 app.post('/xmlrpc.php', function(req, res, next) {
     res.contentType('text/xml'); // without this, ifttt doesn't like us
+    console.log(req);
+    process.nextTick(function() {
+        visitor.event("Incoming XMLRPC", "unspecified").send();
+    });
     return xroute(req, res, next);
 });
 
