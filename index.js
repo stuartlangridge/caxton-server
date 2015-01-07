@@ -142,7 +142,7 @@ function sendPushNotification(token, content, done) {
                         body: content.message,
                         popup: true,
                         persist: true,
-                        actions: ["caxton:" + encodeURIComponent(content.url)]
+                        actions: ["caxton://caxton.caxton/" + encodeURIComponent(content.url)]
                     },
                     sound: content.sound,
                     tag: content.tag,
