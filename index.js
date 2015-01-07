@@ -141,7 +141,8 @@ function sendPushNotification(token, content, done) {
                         summary: content.appname,
                         body: content.message,
                         popup: true,
-                        persist: true
+                        persist: true,
+                        actions: "appid://org.kryogenix.caxton/Caxton/current-user-version?url=" + encodeURIComponent(content.url)
                     },
                     sound: content.sound,
                     tag: content.tag,
