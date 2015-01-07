@@ -131,7 +131,7 @@ function sendPushNotification(token, content, done) {
         url: "https://push.ubuntu.com/notify",
         json: true,
         body: {
-            appid: "org.kryogenix.caxton_caxton",
+            appid: "org.kryogenix.caxton_Caxton",
             expire_on: "2015-12-08T14:48:00.000Z",
             token: token,
             data: {
