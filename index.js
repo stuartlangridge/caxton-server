@@ -114,14 +114,14 @@ app.post('/xmlrpc.php', function(req, res, next) {
     return xroute(req, res, next);
 });
 
-app.get('/', function(req, res, next) {
+app.get('/', /*function(req, res, next) {
     var user = require('basic-auth')(req);
     if (!user || user.name !== "caxton" || user.pass !== "ubuntu") {
         res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
         return res.sendStatus(401);
     }
     next();
-}, function (req, res) {
+},*/ function (req, res) {
     res.render('home');
 });
 
