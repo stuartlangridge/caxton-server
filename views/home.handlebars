@@ -286,6 +286,7 @@
                             <h3>First, get a Caxton password for IFTTT</h3>
                             <p>Press the <strong>Get a code</strong> button in Caxton on your Ubuntu
                             device and then enter the code in the box on the right.</p>
+                            <p><a href="#" class="suppressed" id="show_all_ifttt">I've already done this; show me how to use it.</a></p>
                         </div>
                         <div class="column six last">
                             <form id="iftttform" class="getform">
@@ -327,6 +328,12 @@
                             }
                             </style>
                             <script>
+                            document.getElementById("show_all_ifttt").addEventListener("click", function(e) {
+                                e.preventDefault();
+                                Array.prototype.slice.call(document.querySelectorAll(".ifttt-step2,.ifttt-step3")).forEach(function(d) {
+                                    d.style.display = "block";
+                                });
+                            }, false);
                             document.getElementById("iftttform").addEventListener("submit", makeFormHandler({
                                 appname: "ifttt",
                                 success: function(token) {
