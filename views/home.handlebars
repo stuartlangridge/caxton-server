@@ -477,13 +477,17 @@ Content-type: application/json
                             <h3>Code</h3>
                             <pre>curl -X POST \
  -d "appname=My%20app%20name" \
- -d "token=lcaw...aspof" \
+ --data-urlencode "token=lcaw...aspof" \
  -d "url=http://kryogenix.org" \
  https://caxton.herokuapp.com/api/send
 
 Content-type: application/json
 {ok: "Ok"}
                             </pre>
+                            <p><small>Note that we use <code>--data-urlencode</code> to pass
+                            the token with <code>curl</code> so that any <code>+</code> 
+                            symbols in the token are not treated by curl as escaped spaces.
+                            </small></p>
                         </div>
                         <div class="column six">
                             <h3>Required notification parameters</h3>
