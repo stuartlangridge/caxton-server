@@ -131,7 +131,7 @@ function sendPushNotification(token, content, done) {
         url: "https://push.ubuntu.com/notify",
         json: true,
         body: {
-            appid: "org.kryogenix.caxton_Caxton",
+            appid: "caxton.sil_Caxton",
             expire_on: "2015-12-08T14:48:00.000Z",
             token: token,
             data: {
@@ -178,7 +178,7 @@ function unwrapPassedToken(enc, appname) {
 app.post('/api/getcode', function(req, res) {
     if (!req.body || !req.body.pushtoken) {
         console.log("Error getting code: incomplete request: ", req.body);
-        return res.status(400).json({error: "Incomplete request"});
+        return res.status(400).json({error: "Incomplete request", bodywas: req.body});
     }
     // Create a random easy-to-type code
     var possible = "abcdefghijklmnopqrstuvwxyz", code = "";
