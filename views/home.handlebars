@@ -146,7 +146,7 @@
                                             <div>In <strong>Firefox</strong>,
                                             <a href="https://support.mozilla.org/en-US/kb/bookmarks-toolbar-display-favorite-websites">select <em>Customize > 
                                             Show/Hide Toolbars > Bookmarks Toolbar</em> from the browser menu</a>.</div>
-                                            <div>In <strong>Safari</strong>,
+                                            <div id="bookmarklet-siv">In <strong>Safari</strong>,
                                             <a href="http://marklets.com/FAQ.aspx#safari">select <em>View > 
                                             Show Bookmarks Bar</em> from the main menu</a>.</div>
                                         </div>
@@ -301,6 +301,7 @@ background: linear-gradient(to bottom, #dd4814 0%,#d9722d 100%); /* W3C */      
                                     a.appendChild(document.createTextNode("Send to my Ubuntu phone"));
                                     document.querySelector("#bmform div span").innerHTML = "";
                                     document.querySelector("#bmform div span").appendChild(a);
+                                    document.getElementById("bookmarklet-siv").scrollIntoView(false);
                                 }
                             }), false);
                             </script>
@@ -381,6 +382,7 @@ background: linear-gradient(to bottom, #dd4814 0%,#d9722d 100%); /* W3C */      
                                     Array.prototype.slice.call(document.querySelectorAll(".ifttt-step2,.ifttt-step3")).forEach(function(d) {
                                         d.style.display = "block";
                                     });
+                                    document.querySelector(".ifttt-step2").scrollIntoView(false);
                                 }
                             }), false);
                             </script>
