@@ -42,7 +42,7 @@
                 <section class="row section call-to-action">
                     <div class="row-content buffer even">
                         <p>You need Caxton. Your apps do too.</p>
-                        <a class="button dlcaxton" href="#"><i></i> Get it now</a>
+                        <a class="button dlcaxton" href="https://appstore.bhdouglass.com/app/seshat.sil"><i></i> Get it now</a>
                     </div>
                 </section>
 
@@ -102,7 +102,7 @@
                             <h2>Send web pages to your Ubuntu phone from any browser</h2>
                         </div>
                         <div class="column twelve last">
-                            <p>Download the Caxton extension for <a href="caxton.crx">Chrome</a>,
+                            <p>Download the Caxton extension for <a id="chrome-extension" href="https://chrome.google.com/webstore/detail/bdfeonihegihneninighcbepjoeegffd">Chrome</a>,
                             <a href="caxton.xpi">Firefox</a>, or <a href="caxton.crx">Opera</a>.</p>
                             <p>Alternatively, if you don't want to install the extension you can create yourself
                             a Caxton bookmarklet:</p>
@@ -206,6 +206,11 @@
                             }
                             </style>
                             <script>
+
+                            document.getElementById("chrome-extension").addEventListener("click", function(e) {
+                                e.preventDefault();
+                                chrome.webstore.install();
+                            }, false);
 
                             function makeFormHandler(options) {
                                 return function(e) {
@@ -397,7 +402,7 @@
                 <section class="row section call-to-action">
                     <div class="row-content buffer even">
                         <p>Get the Caxton app for your Ubuntu phone.</p>
-                        <a class="button dlcaxton" href="#"><i></i> Download it now</a>
+                        <a class="button dlcaxton" href="https://appstore.bhdouglass.com/app/seshat.sil"><i></i> Download it now</a>
                     </div>
                 </section>
 
@@ -479,7 +484,7 @@ Content-type: application/json
                 <section class="row section call-to-action">
                     <div class="row-content buffer even">
                         <p>You need Caxton. Your apps do too.</p>
-                        <a class="button dlcaxton" href="#"><i></i> Get it now</a>
+                        <a class="button dlcaxton" href="https://appstore.bhdouglass.com/app/seshat.sil"><i></i> Get it now</a>
                     </div>
                 </section>
             </div><!-- id-main -->
