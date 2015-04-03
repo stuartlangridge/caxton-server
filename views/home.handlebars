@@ -104,6 +104,19 @@
                         <div class="column twelve last">
                             <p>Download the Caxton extension for <a id="chrome-extension" href="https://chrome.google.com/webstore/detail/bdfeonihegihneninighcbepjoeegffd">Chrome</a>,
                             <a href="caxton.xpi">Firefox</a>, or <a href="caxton.crx">Opera</a>.</p>
+                        </div>
+                        <div class="column six">
+                            <ol>
+                            <li>Press the <img src="caxton-logo.svg" class="caxton-button"> Caxton button in your browser</li>
+                            <li>When it asks for a code, press <span class="app-button">Get a code for an app</span> in the Caxton app on your phone to get a code</li>
+                            <li>Enter the code into your browser</li>
+                        </ol>
+                        <p>Now your desktop browser and your phone are paired: press the <img src="caxton-logo.svg" class="caxton-button"> Caxton button to send URLs to your phone!</p>
+                        </div>
+                        <div class="column six last">
+                            <img src="pairing-explanation.png" alt="">
+                        </div>
+                        <div class="column twelve last">
                             <p>Alternatively, if you don't want to install the extension you can create yourself
                             a Caxton bookmarklet:</p>
                         </div>
@@ -141,6 +154,26 @@
                                 </div>
                             </form>
                             <style>
+                            .caxton-button {
+                                height: 24px;
+                                width: 24px;
+                                background-color: #333;
+                                display: inline;
+                            }
+                            .app-button {
+                                border-radius: 3px;
+                                height: 24px;
+                                line-height: 24px;
+                                border: 1px solid transparent;
+background: -moz-linear-gradient(top, #dd4814 0%, #d9722d 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dd4814), color-stop(100%,#d9722d)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #dd4814 0%,#d9722d 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #dd4814 0%,#d9722d 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #dd4814 0%,#d9722d 100%); /* IE10+ */
+background: linear-gradient(to bottom, #dd4814 0%,#d9722d 100%); /* W3C */                                padding: 4px;
+                                font-size: 12px;
+                                color: white;
+                            }
                             form.getform input { text-align: center; }
                             button.getcode.getting i {
                                 -webkit-animation: spin 1s linear infinite;
@@ -221,7 +254,7 @@
                                        As per http://css-tricks.com/restart-css-animation/ */
                                     form.querySelector("span.error").offsetWidth;
                                     var x = new XMLHttpRequest();
-                                    x.open("POST", "http://caxton.herokuapp.com/api/gettoken", true);
+                                    x.open("POST", "//caxton.herokuapp.com/api/gettoken", true);
                                     x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                     x.onreadystatechange = function() {
                                         if (x.readyState == 4) {
@@ -247,7 +280,7 @@
 
                             function usebm() {
                                 var x = new XMLHttpRequest();
-                                x.open("POST", "http://caxton.herokuapp.com/api/send", true);
+                                x.open("POST", "//caxton.herokuapp.com/api/send", true);
                                 x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                 x.onreadystatechange = function() {
                                     if (x.readyState == 4) {
@@ -424,7 +457,7 @@
                             <h3>Code</h3>
                             <pre>curl -X POST \
  -d "code=abcde&amp;appname=My%20app%20name" \
- http://caxton.herokuapp.com/api/gettoken
+ https://caxton.herokuapp.com/api/gettoken
 
 Content-type: application/json
 {"token": "lcaw...aspof"}
@@ -444,7 +477,7 @@ Content-type: application/json
  -d "appname=My%20app%20name" \
  -d "token=lcaw...aspof" \
  -d "url=http://kryogenix.org" \
- http://caxton.herokuapp.com/api/send
+ https://caxton.herokuapp.com/api/send
 
 Content-type: application/json
 {ok: "Ok"}
