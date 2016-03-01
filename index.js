@@ -132,7 +132,7 @@ function sendPushNotification(token, content, done) {
         json: true,
         body: {
             appid: "caxton.sil_Caxton",
-            expire_on: "2015-12-08T14:48:00.000Z",
+            expire_on: "2030-12-08T14:48:00.000Z",
             token: token,
             data: {
                 message: content,
