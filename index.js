@@ -128,7 +128,7 @@ app.get('/', /*function(req, res, next) {
 function sendPushNotification(token, content, done) {
     console.log("requesting with token", token);
     var dict = {
-        url: "https://push.ubuntu.com/notify",
+        url: "https://push.ubports.com/notify",
         json: true,
         body: {
             appid: "caxton.sil_Caxton",
