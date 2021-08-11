@@ -281,3 +281,4 @@ if (require.main == module) {
       console.log('Caxton server listening at http://%s:%s', host, port);
     });
 }
+
