@@ -20,7 +20,7 @@ pubkey.importKey(fs.readFileSync('public.key'));
 
 // Create database contents table on startup
 exports.dbStartup = function(dburl) {
-    var pgclient = new pg.Client({ssl: {rejectUnauthorized: true}, connectionString: dburl});
+    var pgclient = new pg.Client({ssl: {rejectUnauthorized: false}, connectionString: dburl});
     pgclient.connect(function(err) {
         if (err) {
             throw new Error(err);
@@ -188,7 +188,7 @@ app.post('/api/getcode', function(req, res) {
         code += possible.charAt(Math.floor(Math.random() * possible.length));
     }
 
-    var pgclient = new pg.Client({ssl: {rejectUnauthorized: true}, connectionString: dburl});
+    var pgclient = new pg.Client({ssl: {rejectUnauthorized: false}, connectionString: dburl});
     pgclient.connect(function(err) {
         if (err) {
             console.log("Error getting code: connection: ", err);
@@ -217,7 +217,7 @@ app.post('/api/gettoken', function(req, res) {
         return res.status(400).json({error: "No appname provided"});
     }
     console.log("connecting");
-    var pgclient = new pg.Client({ssl: {rejectUnauthorized: true}, connectionString: dburl});
+    var pgclient = new pg.Client({ssl: {rejectUnauthorized: false}, connectionString: dburl});
     pgclient.connect(function(err) {
     console.log("connected");
         if (err) {
