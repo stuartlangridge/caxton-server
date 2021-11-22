@@ -214,7 +214,10 @@ app.post('/api/gettoken', function(req, res) {
     if (!req.body.appname) {
         return res.status(400).json({error: "No appname provided"});
     }
+    console.log("connecting");
+    return res.status(400).json({dburl: "this:" + app.get("dburl") + ":endit"});
     pg.connect(app.get('dburl'), function(err, client, returnClientToPool) {
+    console.log("connected");
         if (err) {
             console.log("Error getting code: connection: ", err);
             return res.status(500).json({error: "Server problem"});
