@@ -38,8 +38,7 @@ exports.dbStartup = function(dburl) {
                 'EXECUTE PROCEDURE delete_old_rows();'
         ];
         async.eachSeries(sqls, function(sql, cb) {
-            client.query(sql, function(err, result) {
-                returnClientToPool();
+            pgclient.query(sql, function(err, result) {
                 cb(err);
             });
         }, function(err) {
@@ -194,7 +193,7 @@ app.post('/api/getcode', function(req, res) {
             console.log("Error getting code: connection: ", err);
             return res.status(500).json({error: "Server problem"});
         }
-        client.query("insert into codes (pushtoken, code) values ($1::varchar, $2::varchar)", 
+        pgclient.query("insert into codes (pushtoken, code) values ($1::varchar, $2::varchar)", 
             [req.body.pushtoken, code],
             function(err, result) {
             returnClientToPool();
@@ -224,7 +223,7 @@ app.post('/api/gettoken', function(req, res) {
             console.log("Error getting code: connection: ", err);
             return res.status(500).json({error: "Server problem"});
         }
-        client.query("select pushtoken from codes where code = $1::varchar", 
+        pgclient.query("select pushtoken from codes where code = $1::varchar", 
             [req.body.code],
             function(err, result) {
             returnClientToPool();
@@ -242,7 +241,7 @@ app.post('/api/gettoken', function(req, res) {
             }), "base64");
             res.json({token: enctoken});
             // and remove token from DB
-            client.query("delete from codes where code = $1::varchar", [req.body.code], function(err, result) {
+            pgclient.query("delete from codes where code = $1::varchar", [req.body.code], function(err, result) {
                 console.log("code removed");
             });
             // and notify the client that it's done

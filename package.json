@@ -7,9 +7,6 @@
     "test": "mocha",
     "start-nodemon": "nodemon index.js -w views"
   },
-  "engines": {
-    "node": "12.x"
-  },
   "author": "Stuart Langridge <sil@kryogenix.org>",
   "license": "Public Domain",
   "dependencies": {
