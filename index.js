@@ -196,7 +196,6 @@ app.post('/api/getcode', function(req, res) {
         pgclient.query("insert into codes (pushtoken, code) values ($1::varchar, $2::varchar)", 
             [req.body.pushtoken, code],
             function(err, result) {
-            returnClientToPool();
             if (err) {
                 console.log("Error getting code: insert: ", err);
                 return res.status(500).json({error: "Server problem"});
@@ -226,7 +225,6 @@ app.post('/api/gettoken', function(req, res) {
         pgclient.query("select pushtoken from codes where code = $1::varchar", 
             [req.body.code],
             function(err, result) {
-            returnClientToPool();
             if (err) {
                 console.log("Error getting code: insert: ", err);
                 return res.status(500).json({error: "Server problem"});
