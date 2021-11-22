@@ -7,7 +7,9 @@
     "test": "mocha",
     "start-nodemon": "nodemon index.js -w views"
   },
-  "engines": { "node": "12.x" },
+  "engines": {
+    "node": "12.x"
+  },
   "author": "Stuart Langridge <sil@kryogenix.org>",
   "license": "Public Domain",
   "dependencies": {
@@ -19,7 +21,7 @@
     "graceful-fs": "^4.2.8",
     "mocha": "^2.5.3",
     "node-rsa": "^0.2.30",
-    "pg": "^4.5.7",
+    "pg": "^8.7.1",
     "request": "^2.88.2",
     "rewire": "^2.5.2",
     "should": "^4.6.5",

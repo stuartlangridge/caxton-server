@@ -20,7 +20,8 @@ pubkey.importKey(fs.readFileSync('public.key'));
 
 // Create database contents table on startup
 exports.dbStartup = function(dburl) {
-    pg.connect(dburl, function(err, client, returnClientToPool) {
+    var pgclient = new pg.Client({ssl: {rejectUnauthorized: true}, connectionString: dburl});
+    pgclient.connect(function(err) {
         if (err) {
             throw new Error(err);
         }
@@ -187,7 +188,8 @@ app.post('/api/getcode', function(req, res) {
         code += possible.charAt(Math.floor(Math.random() * possible.length));
     }
 
-    pg.connect(app.get('dburl'), function(err, client, returnClientToPool) {
+    var pgclient = new pg.Client({ssl: {rejectUnauthorized: true}, connectionString: dburl});
+    pgclient.connect(function(err) {
         if (err) {
             console.log("Error getting code: connection: ", err);
             return res.status(500).json({error: "Server problem"});
@@ -215,7 +217,8 @@ app.post('/api/gettoken', function(req, res) {
         return res.status(400).json({error: "No appname provided"});
     }
     console.log("connecting");
-    pg.connect(app.get('dburl'), function(err, client, returnClientToPool) {
+    var pgclient = new pg.Client({ssl: {rejectUnauthorized: true}, connectionString: dburl});
+    pgclient.connect(function(err) {
     console.log("connected");
         if (err) {
             console.log("Error getting code: connection: ", err);
@@ -240,7 +243,7 @@ app.post('/api/gettoken', function(req, res) {
             res.json({token: enctoken});
             // and remove token from DB
             client.query("delete from codes where code = $1::varchar", [req.body.code], function(err, result) {
-                returnClientToPool();
+                console.log("code removed");
             });
             // and notify the client that it's done
             sendPushNotification(result.rows[0].pushtoken, {type: "token-received", 
